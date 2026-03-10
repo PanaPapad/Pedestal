@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/PanaPapad/Pedestal/internal/models"
+	"github.com/PanaPapad/Pedestal/backend/models"
 )
 
 // define a handler object: this is a struct that provides access to all sql.DB methods, we name it DB
@@ -89,7 +89,7 @@ func (r *BlogRepository) GetOneBlog(slug string) (*models.BlogPost, error) {
 	`
 
 	var blog_post models.BlogPost
-	print("SLUG", slug)
+
 	err := r.DB.QueryRow(query, slug).Scan(
 		&blog_post.ID,
 		&blog_post.Title,

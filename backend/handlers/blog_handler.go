@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
-	"github.com/PanaPapad/Pedestal/internal/models"
-	"github.com/PanaPapad/Pedestal/internal/repositories"
-	utils "github.com/PanaPapad/Pedestal/internal/utlis"
+	"github.com/PanaPapad/Pedestal/backend/models"
+	"github.com/PanaPapad/Pedestal/backend/repositories"
+	utils "github.com/PanaPapad/Pedestal/backend/utlis"
 	"github.com/gin-gonic/gin"
 )
 
@@ -95,4 +96,18 @@ func (h *BlogHandler) DeleteBlog(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusNoContent, gin.H{"sucess": "blog deleted sucessfully"})
+}
+
+func (h *BlogHandler) ListBlogs(c *gin.Context) {
+	posts, err := h.Repo.GetAllBlogs()
+	if err != nil {
+		c.String(500, "something went wrong")
+	}
+
+	c.HTML(http.StatusOK, "layout.html", gin.H{
+		"Title":           "Blog",
+		"ContentTemplate": "blog_list.html",
+		"Year":            time.Now().Year(),
+		"Posts":           posts,
+	})
 }
